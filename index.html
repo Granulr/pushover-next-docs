@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Install and configure Pushover Notifications for self-hosted Perfex CRM Next, connect Pushover and choose your alerts.">
+<title>Set up Pushover Notifications for Perfex CRM Next | Granulr</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="masthead"><div class="frame"><img src="images/granulr-logo.png" alt="Granulr" width="505" height="125"><span>Setup guide for Perfex CRM Next</span></div></header>
+<main class="frame">
+<h1>Set up Pushover Notifications for Perfex CRM Next</h1>
+<p>For Pushover Notifications <strong>1.0.0</strong> and self-hosted <strong>Perfex CRM Next 1.0.1 or later</strong>. The module runs on the Laravel edition of Perfex. It requires the native <strong>Integrations</strong> and <strong>Automations</strong> modules and a working Next scheduler and queue.</p>
+<nav aria-label="Guide sections" class="contents"><strong>On this page</strong><ol><li><a href="#install-the-module-in-perfex">Install the module in Perfex</a></li>
+<li><a href="#set-up-pushover-and-get-your-keys">Set up Pushover and get your keys</a></li>
+<li><a href="#connect-pushover-and-send-a-test">Connect Pushover and send a test</a></li>
+<li><a href="#choose-which-events-send-alerts">Choose which events send alerts</a></li>
+<li><a href="#optional-rule-for-new-tickets-after-hours">Optional rule for new tickets after hours</a></li>
+<li><a href="#troubleshoot-a-connection-or-alert">Troubleshoot a connection or alert</a></li></ol></nav><h2 id="install-the-module-in-perfex">1. Install the module in Perfex</h2>
+<ol>
+<li>Extract the outer CodeCanyon download. Inside it, find <strong><code>PushoverNotifications-1.0.0.zip</code></strong>. Leave that inner ZIP intact.</li>
+<li>Sign in to Perfex as a super admin and open <strong>Settings → Modules</strong>. Select <strong>Choose module</strong> and upload the inner ZIP.</li>
+<li>Find <strong>PushoverNotifications</strong> in the module list and check the version. Open its <strong>Actions</strong> menu and select <strong>Enable</strong> if the module is disabled. Complete any database maintenance Perfex prompts you to run. When the module is enabled, its menu offers <strong>Disable</strong>.</li>
+</ol>
+<figure><a href="images/01-upload-module.jpg"><img src="images/01-upload-module.jpg" alt="The Modules page and Choose module ZIP upload area in Perfex CRM Next" loading="lazy"></a><figcaption>The Modules page and Choose module ZIP upload area in Perfex CRM Next</figcaption></figure>
+<figure><a href="images/02-installed-module.jpg"><img src="images/02-installed-module.jpg" alt="PushoverNotifications 1.0.0 installed with its Actions menu open" loading="lazy"></a><figcaption>PushoverNotifications 1.0.0 installed with its Actions menu open</figcaption></figure>
+<h2 id="set-up-pushover-and-get-your-keys">2. Set up Pushover and get your keys</h2>
+<ol>
+<li>Install the <a href="https://pushover.net/clients">Pushover client</a> on the phone or other device that will receive alerts. Sign in and register the device. The <a href="https://support.pushover.net/i7-what-is-pushover-and-how-do-i-use-it">Pushover getting-started guide</a> explains account and device setup.</li>
+<li>Sign in to your <a href="https://pushover.net/">Pushover dashboard</a>. Find <strong>Your User Key</strong> and copy the value below that heading. To send to a group, <a href="https://support.pushover.net/i169-how-do-i-send-messages-to-other-users-with-pushover">set up a Pushover delivery group</a> and use its <strong>Group Key</strong>.</li>
+<li>Open <a href="https://pushover.net/apps/build">Create New Application</a>. In <strong>Name</strong>, enter a name you will recognise on your phone, such as <code>Perfex CRM Next</code>. Add any optional details you want, review Pushover’s terms and select <strong>Create Application</strong>.</li>
+<li>On the application page, copy the value under <strong>API Token</strong>. Pushover explains the token in its <a href="https://support.pushover.net/i175-how-to-get-a-pushover-api-or-pushover-application-token">application token guide</a>.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Copy from Pushover</th>
+<th>Enter in Perfex</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>API Token</strong> on the application page</td>
+<td><strong>Application token</strong></td>
+</tr>
+<tr>
+<td><strong>Your User Key</strong> on the dashboard or <strong>Group Key</strong> on the delivery group</td>
+<td><strong>User or group key</strong></td>
+</tr>
+</tbody>
+</table>
+<figure><a href="images/03a-pushover-user-key.jpg"><img src="images/03a-pushover-user-key.jpg" alt="Your User Key heading on the Pushover dashboard. The key field is below the area shown." loading="lazy"></a><figcaption>Your User Key heading on the Pushover dashboard. The key field is below the area shown.</figcaption></figure>
+<figure><a href="images/03b-pushover-create-application.jpg"><img src="images/03b-pushover-create-application.jpg" alt="The blank Create New Application form in Pushover" loading="lazy"></a><figcaption>The blank Create New Application form in Pushover</figcaption></figure>
+<figure><a href="images/03c-pushover-api-token.jpg"><img src="images/03c-pushover-api-token.jpg" alt="API Token heading on the Pushover application page. The token field is below the area shown." loading="lazy"></a><figcaption>API Token heading on the Pushover application page. The token field is below the area shown.</figcaption></figure>
+<p>Each buyer registers their own application. Keep both values private and enter them in your own Perfex installation.</p>
+<h2 id="connect-pushover-and-send-a-test">3. Connect Pushover and send a test</h2>
+<ol>
+<li>In Perfex, open <strong>Settings → Integrations → Pushover</strong> and choose <strong>Connect account</strong>.</li>
+<li>Paste the two values into <strong>Application token</strong> and <strong>User or group key</strong>, then select <strong>Connect</strong>.</li>
+<li>Check that the connection appears under <strong>Connection</strong>. Select <strong>Send test notification</strong> and check the Pushover app on the intended device. The Perfex result shows whether Pushover accepted the send. The notification on the device confirms receipt.</li>
+</ol>
+<figure><a href="images/04-connect-pushover.jpg"><img src="images/04-connect-pushover.jpg" alt="The Connect Pushover account dialog with empty Application token and User or group key fields" loading="lazy"></a><figcaption>The Connect Pushover account dialog with empty Application token and User or group key fields</figcaption></figure>
+<figure><a href="images/06-test-notification.jpg"><img src="images/06-test-notification.jpg" alt="The Send test notification button on the settings page with a fixture connection" loading="lazy"></a><figcaption>The Send test notification button on the settings page with a fixture connection</figcaption></figure>
+<h2 id="choose-which-events-send-alerts">4. Choose which events send alerts</h2>
+<p>Under <strong>Built-in alerts</strong>, turn on the events you want. All 24 switches start off on a fresh installation. The available groups depend on which Perfex modules are enabled.</p>
+<p>For the first end-to-end check, enable <strong>New customer ticket</strong> and <strong>Customer reply</strong>. Open a test ticket as a customer and then post a separate customer reply. Look for one notification for each action.</p>
+<figure><a href="images/05-alert-switches.jpg"><img src="images/05-alert-switches.jpg" alt="The Built-in alerts section with the new customer ticket and customer reply switches turned on" loading="lazy"></a><figcaption>The Built-in alerts section with the new customer ticket and customer reply switches turned on</figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Built-in alerts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Support</td>
+<td>New customer ticket, customer reply, staff reply, internal note, unanswered ticket</td>
+</tr>
+<tr>
+<td>Sales</td>
+<td>New lead, lead converted, lead lost, deal won, deal lost, deal reopened</td>
+</tr>
+<tr>
+<td>Quotes and estimates</td>
+<td>First viewed, accepted, declined, approaching expiry</td>
+</tr>
+<tr>
+<td>Invoices</td>
+<td>Payment recorded, refund recorded, invoice overdue</td>
+</tr>
+<tr>
+<td>Tasks and projects</td>
+<td>New task, task completed, task comment, task due-date reminder, new project, project due-date reminder</td>
+</tr>
+</tbody>
+</table>
+<p>The built-in unanswered-ticket alert waits 30 minutes. An automatic acknowledgement leaves the timer running. Quote and estimate expiry reminders run three days before expiry. Task and project reminders run one and seven days before their due dates, respectively. Date reminders use the company timezone. Partial payments each count as payment events, and CSV imports run quietly.</p>
+<h2 id="optional-rule-for-new-tickets-after-hours">5. Optional rule for new tickets after hours</h2>
+<ol>
+<li>Open <strong>Automations → Create automation</strong>. Give the rule a name and choose <strong>Tickets</strong> as its <strong>Subject</strong>.</li>
+<li>Under <strong>Trigger</strong>, select <strong>Add trigger</strong>, open <strong>Choose a trigger…</strong> and choose <strong>New customer ticket</strong>.</li>
+<li>Select <strong>Add condition · optional → Time of day is</strong>. Choose <strong>Is not between</strong> and enter <strong>9</strong> and <strong>17</strong> for an alert outside 09:00–17:00 in the company timezone.</li>
+<li>Under <strong>Actions</strong>, select <strong>Add action → Send Pushover notification</strong>. Leave <strong>Active</strong> on and select <strong>Create</strong>.</li>
+</ol>
+<figure><a href="images/07-custom-rule.jpg"><img src="images/07-custom-rule.jpg" alt="A saved example rule showing New customer ticket, the outside-hours condition and Send Pushover notification" loading="lazy"></a><figcaption>A saved example rule showing New customer ticket, the outside-hours condition and Send Pushover notification</figcaption></figure>
+<p>Custom rules use the same connected recipient and have their own <strong>Active</strong> switch. For new-ticket alerts outside working hours only, leave the built-in <strong>New customer ticket</strong> switch off. An edited built-in rule is marked in Pushover settings. Restore its built-in definition there if you want to manage it from its original switch again.</p>
+<h2 id="troubleshoot-a-connection-or-alert">Troubleshoot a connection or alert</h2>
+<table>
+<thead>
+<tr>
+<th>What you see</th>
+<th>What to check</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pushover is missing from Integrations</td>
+<td>Confirm the module is enabled, database maintenance is complete, and you are signed in as a super admin.</td>
+</tr>
+<tr>
+<td>Connection is rejected</td>
+<td>Recheck where each key came from and whether the intended device is active in Pushover. Update the credentials to rotate a token for the same recipient. Disconnect and connect again to change recipient.</td>
+</tr>
+<tr>
+<td>Pushover accepts a test but the phone stays quiet</td>
+<td>Check the connected recipient, device registration and device notification settings. See <a href="https://support.pushover.net/i14-not-receiving-pushover-notifications-from-3rd-party-software-services">Pushover's delivery troubleshooting</a>.</td>
+</tr>
+<tr>
+<td>A test arrives but a CRM alert stays quiet</td>
+<td>Check the relevant switch or custom rule, the rule history, and that Next's scheduler and queue are running. Check that a timed alert has reached its scheduled time.</td>
+</tr>
+<tr>
+<td>Perfex reports a quota error</td>
+<td>Check the message limit in your Pushover account.</td>
+</tr>
+<tr>
+<td>Perfex shows <strong>Delivery unknown</strong></td>
+<td>Check the destination device before sending another test.</td>
+</tr>
+</tbody>
+</table>
+<p>Alerts include a short record reference and an admin link when available. The link opens in Perfex and respects normal record access.</p>
+
+</main>
+<footer><div class="frame">Granulr · Pushover Notifications 1.0.0 for self-hosted Perfex CRM Next</div></footer>
+</body>
+</html>
